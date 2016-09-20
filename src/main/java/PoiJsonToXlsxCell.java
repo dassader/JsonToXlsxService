@@ -7,6 +7,7 @@ public class PoiJsonToXlsxCell {
     private String value;
     private int size;
     private int offset;
+    private int colspan;
 
     public String getValue() {
         return value;
@@ -30,5 +31,13 @@ public class PoiJsonToXlsxCell {
 
     public void setOffset(int offset) {
         this.offset = offset;
+    }
+
+    public int getColspan() {
+        return colspan;
+    }
+
+    public void setColspan(int colspan) {
+        this.colspan = colspan;
     }
 }
