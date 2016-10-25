@@ -1,13 +1,9 @@
-import java.util.List;
-
-/**
- * Created by AndriiK on 9/19/2016.
- */
-public class PoiJsonToXlsxCell {
+public class JsonCell {
     private String value;
     private int size;
     private int offset;
     private int colspan;
+    private int rowspan;
 
     public String getValue() {
         return value;
@@ -39,5 +35,13 @@ public class PoiJsonToXlsxCell {
 
     public void setColspan(int colspan) {
         this.colspan = colspan;
+    }
+
+    public int getRowspan() {
+        return rowspan;
+    }
+
+    public void setRowspan(int rowspan) {
+        this.rowspan = rowspan;
     }
 }

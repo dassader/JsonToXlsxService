@@ -1,14 +1,14 @@
 import java.util.List;
 
-public class PoiJsonToXlsxSheet {
+public class JsonSheet {
     private String name;
-    private List<PoiJsonToXlsxRow> rows;
+    private List<JsonRow> rows;
 
-    public List<PoiJsonToXlsxRow> getRows() {
+    public List<JsonRow> getRows() {
         return rows;
     }
 
-    public void setRows(List<PoiJsonToXlsxRow> rows) {
+    public void setRows(List<JsonRow> rows) {
         this.rows = rows;
     }
 

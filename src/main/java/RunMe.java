@@ -1,19 +1,22 @@
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.IOUtils;
 
 import java.io.*;
+import java.util.List;
 
 
-/**
- * Created by AndriiK on 9/19/2016.
- */
 public class RunMe {
     public static void main(String[] args) throws IOException {
-        String testJsonData = readFile("input.json");
+        String testJsonData = readFile("input3.json");
 
-        JsonToXlsxBuilder jsonToXlsxBuilder = new PoiJsonToXlsxBuilder();
-        InputStream data = jsonToXlsxBuilder.build(testJsonData);
+        ObjectMapper objectMapper = new ObjectMapper();
 
-        IOUtils.copy(data, new FileOutputStream("output.xlsx"));
+        JsonToXlsxBuilder jsonToXlsxBuilder = new PoiJsonToExcelBuilder();
+        List<JsonSheet> jsonSheets = objectMapper.readValue(testJsonData, new TypeReference<List<JsonSheet>>(){});
+        byte[] butes = jsonToXlsxBuilder.build(jsonSheets);
+
+        IOUtils.copy(new ByteArrayInputStream(butes), new FileOutputStream("output.xlsx"));
 
         String program = "C:\\Program Files (x86)\\LibreOffice 5\\program\\scalc.exe";
 
