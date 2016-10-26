@@ -14,7 +14,12 @@ public class RunMe {
 
         JsonToXlsxBuilder jsonToXlsxBuilder = new PoiJsonToExcelBuilder();
         List<JsonSheet> jsonSheets = objectMapper.readValue(testJsonData, new TypeReference<List<JsonSheet>>(){});
+
+        long l = System.nanoTime();
+
         byte[] butes = jsonToXlsxBuilder.build(jsonSheets);
+
+        System.out.println("Time: "+(System.nanoTime() - l));
 
         IOUtils.copy(new ByteArrayInputStream(butes), new FileOutputStream("output.xlsx"));
 

@@ -2,8 +2,7 @@ import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+
 
 import java.io.IOException;
 import java.util.Iterator;
@@ -11,10 +10,9 @@ import java.util.List;
 
 import static org.apache.poi.ss.usermodel.CellStyle.VERTICAL_TOP;
 
-@Service
 public class PoiJsonToExcelBuilder implements JsonToXlsxBuilder {
-    @Autowired
-    private JsonSheetToExcelSheetConverter sheetConverter;
+
+    private JsonSheetToExcelSheetConverter sheetConverter = new JsonSheetToExcelSheetConverter();
 
     public byte[] build(List<JsonSheet> sheetList) {
         Workbook workbook = new SXSSFWorkbook();
@@ -62,7 +60,7 @@ public class PoiJsonToExcelBuilder implements JsonToXlsxBuilder {
             Row targetRow = rowIterator.next();
             int lastCellNum = targetRow.getLastCellNum();
 
-            if(lastCellNum > maxCellNum) {
+            if (lastCellNum > maxCellNum) {
                 maxCellNum = lastCellNum;
             }
         }
@@ -87,12 +85,16 @@ public class PoiJsonToExcelBuilder implements JsonToXlsxBuilder {
     private void buildCell(Row row, ExcelCell excelCell, Sheet sheet, Workbook workbook) {
         Cell cell = row.createCell(excelCell.getFromCell());
 
-        CellStyle cellStyle = workbook.createCellStyle();
-        cellStyle.setVerticalAlignment(VERTICAL_TOP);
-        cell.setCellStyle(cellStyle);
-
         cell.setCellValue(excelCell.getText());
-        sheet.addMergedRegion(new CellRangeAddress(excelCell.getFromRow(), excelCell.getToRow(),
-                excelCell.getFromCell(), excelCell.getToCell()));
+
+        if (excelCell.getFromRow() != excelCell.getToRow()
+                || excelCell.getFromCell() != excelCell.getToCell()) {
+            CellStyle cellStyle = workbook.createCellStyle();
+            cellStyle.setVerticalAlignment(VERTICAL_TOP);
+            cell.setCellStyle(cellStyle);
+
+            sheet.addMergedRegion(new CellRangeAddress(excelCell.getFromRow(), excelCell.getToRow(),
+                    excelCell.getFromCell(), excelCell.getToCell()));
+        }
     }
 }
